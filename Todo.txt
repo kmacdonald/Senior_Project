@@ -1,5 +1,0 @@
- - find or identify valid sentence structures
- - put everything in one file
- - separate proper nouns from other nouns
- - identify words that can start a sentence
- - analyze sentences for possible grammatical improvements

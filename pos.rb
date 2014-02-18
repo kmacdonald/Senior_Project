@@ -1,44 +1,73 @@
-# regular expression?
-def remove_punctuation(word)
-	punct = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ";", "!", ",", ":", ".", "(", ")", "?", "[", "]", "{", "}", "_"]
-	for i in 0..(punct.length - 2)
-		word.gsub!(punct[i], "")
-	end
-	word.gsub!(punct[punct.length - 1], " ")
-end
-
-def words_to_array(filename, arr)
+def words_to_array(filename, noun, proper_noun, plural, noun_phrase, verb, transitive_verb, intransitive_verb, adjective, adverb, conjunction, preposition, interjection, pronoun, definite_article, indefinite_article, nominative)
 	corpus = File.new(filename, "r")
 	while(line = corpus.gets)
-		arr << line.chomp
-	end
-end
-
-def find_unknown(infile, outfile, arr)
-	words = []
-	corpus = File.new(infile, "r")
-	while(line = corpus.gets)
-		line.split.each do |word|
-			words << word
-		end
-	end
-	File.open(outfile, "w") do |file|
-		words.each do |word|
-			w = word
-			remove_punctuation(w)
-			w.downcase!
-			if(!arr.include?(word))
-				file.puts w
+		word = line.chomp.split(":")
+		if(word[1].include?("N"))
+			if(word[0] == word[0].downcase)
+				noun << word[0]
+			else
+				proper_noun << word[0]
 			end
 		end
+		if(word[1].include?("p"))
+			plural << word[0]
+		end
+		if(word[1].include?("h"))
+			noun_phrase << word[0]
+		end
+		if(word[1].include?("V"))
+			verb << word[0]
+		end
+		if(word[1].include?("t"))
+			transitive_verb << word[0]
+		end
+		if(word[1].include?("i"))
+			intransitive_verb << word[0]
+		end
+		if(word[1].include?("A"))
+			adjective << word[0]
+		end
+		if(word[1].include?("v"))
+			adverb << word[0]
+		end
+		if(word[1].include?("C"))
+			conjunction << word[0]
+		end
+		if(word[1].include?("P"))
+			preposition << word[0]
+		end
+		if(word[1].include?("!"))
+			interjection << word[0]
+		end
+		if(word[1].include?("r"))
+			pronoun << word[0]
+		end
+		if(word[1].include?("D"))
+			definite_article << word[0]
+		end
+		if(word[1].include?("I"))
+			indefinite_article << word[0]
+		end
+		if(word[1].include?("o"))
+			nominative << word[0]
+		end
 	end
 end
 
-words = []
-words_to_array("nouns.txt", words)
-words_to_array("verbs.txt", words)
-words_to_array("adjectives.txt", words)
-words_to_array("adverbs.txt", words)
-words_to_array("prepositions.txt", words)
-words_to_array("conjunctions.txt", words)
-find_unknown("corpus.txt", "unknown.txt", words)
+@noun = []
+@proper_noun = []
+@plural = []
+@noun_phrase = []
+@verb = []
+@transitive_verb = []
+@intransitive_verb = []
+@adjective = []
+@adverb = []
+@conjunction = []
+@preposition = []
+@interjection = []
+@pronoun = []
+@definite_article = []
+@indefinite_article = []
+@nominative = []
+words_to_array("words.txt", @noun, @proper_noun, @plural, @noun_phrase, @verb, @transitive_verb, @intransitive_verb, @adjective, @adverb, @conjunction, @preposition, @interjection, @pronoun, @definite_article, @indefinite_article, @nominative)

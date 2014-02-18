@@ -1,3 +1,5 @@
+require "./grammar_tests.rb"
+
 def remove_punctuation(word, punct)
 	for i in 0..(punct.length - 1)
 		word.gsub!(punct[i], "")
@@ -44,7 +46,7 @@ def bigram(sentence, word, arr)
 end
 
 def trigram(sentence, word1, word2, arr, punct)
-	while !sentence.include?(".") && !sentence.include?("?") && !sentence.include?("!")
+	while !pre_tests?(sentence)
 		if(!punct.include?(word1))
 			sentence << word1 + " "
 		elsif(punct.include?(word1) and !sentence.empty?)
@@ -58,7 +60,11 @@ def trigram(sentence, word1, word2, arr, punct)
 				next_words << arr[i+2]
 			end
 		end
-		trigram(sentence, word2, next_words.shuffle[0], arr, punct)
+		if(sentence.include?("(") and !sentence.include?(")") and next_words.include?(")"))
+			trigram(sentence, word2, ")", arr, punct)
+		else
+			trigram(sentence, word2, next_words.shuffle[0], arr, punct)
+		end
 	end
 end
 
@@ -74,10 +80,15 @@ def n_gram(num)
 	elsif(num == 3)
 		word_ind = rand(arr.length-1)
 		trigram(sentence, arr[word_ind], arr[word_ind + 1], arr, punctuation)
+		post_tests?(sentence)
 	else
 		puts "error"
 	end
-	puts sentence
+	return sentence
 end
 
-puts n_gram(3)
+File.open("abunchofngrams2.txt", "w") do |file|
+	for i in 0..1
+		file.puts n_gram(3)
+	end
+end
