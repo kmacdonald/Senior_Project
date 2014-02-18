@@ -1,3 +1,4 @@
+#sorts the words based on their part of speech; some go in multiple arrays
 def words_to_array(filename, noun, proper_noun, plural, noun_phrase, verb, transitive_verb, intransitive_verb, adjective, adverb, conjunction, preposition, interjection, pronoun, definite_article, indefinite_article, nominative)
 	corpus = File.new(filename, "r")
 	while(line = corpus.gets)
@@ -54,6 +55,7 @@ def words_to_array(filename, noun, proper_noun, plural, noun_phrase, verb, trans
 	end
 end
 
+#these arrays can be accessed by other files
 @noun = []
 @proper_noun = []
 @plural = []
@@ -70,4 +72,5 @@ end
 @definite_article = []
 @indefinite_article = []
 @nominative = []
+#and now they are filled up:
 words_to_array("words.txt", @noun, @proper_noun, @plural, @noun_phrase, @verb, @transitive_verb, @intransitive_verb, @adjective, @adverb, @conjunction, @preposition, @interjection, @pronoun, @definite_article, @indefinite_article, @nominative)

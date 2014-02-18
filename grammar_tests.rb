@@ -1,4 +1,9 @@
+#Need this in order to tell what part of speech each word is.
 require "./pos.rb"
+
+#I think these are pretty self-explanatory.
+#The pre_tests all have to be true for the sentence to be completed.
+#The post_tests are run on the completed sentences. They fix any issues and then return true.
 
 def is_complete?(sentence)
 	if(sentence.include?(".") or sentence.include?("?") or sentence.include?("!"))

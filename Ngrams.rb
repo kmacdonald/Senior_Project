@@ -1,11 +1,14 @@
+#Need this to make sure sentences are grammatically correct.
 require "./grammar_tests.rb"
 
+#Does what it says it does.
 def remove_punctuation(word, punct)
 	for i in 0..(punct.length - 1)
 		word.gsub!(punct[i], "")
 	end
 end
 
+#Puts all the words in an array in order, and treats punctuation as words.
 def words_to_array(filename, arr, punct)
 	corpus = File.new(filename, "r")
 	while(line = corpus.gets)
@@ -25,6 +28,7 @@ def words_to_array(filename, arr, punct)
 	end
 end
 
+#Not important.
 def unigram(sentence, arr)
 	while !sentence.include?(".") && !sentence.include?("?") && !sentence.include?("!")
 		sentence << arr[rand(arr.length - 1)] + " "
@@ -32,6 +36,7 @@ def unigram(sentence, arr)
 	puts sentence
 end
 
+#Not important.
 def bigram(sentence, word, arr)
 	while !sentence.include?(".") && !sentence.include?("?") && !sentence.include?("!")
 		sentence << word + " "
@@ -45,6 +50,7 @@ def bigram(sentence, word, arr)
 	end
 end
 
+#The only important one, does what it says it does.
 def trigram(sentence, word1, word2, arr, punct)
 	while !pre_tests?(sentence)
 		if(!punct.include?(word1))
@@ -68,6 +74,7 @@ def trigram(sentence, word1, word2, arr, punct)
 	end
 end
 
+#Takes in a number, produces the appropriate n-gram
 def n_gram(num)
 	sentence = ""
 	arr = []
@@ -87,8 +94,9 @@ def n_gram(num)
 	return sentence
 end
 
+#I've been writing thme to files so that I can look at them and see what other issues they have.
 File.open("abunchofngrams2.txt", "w") do |file|
-	for i in 0..1
+	for i in 0..10
 		file.puts n_gram(3)
 	end
 end
