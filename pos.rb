@@ -87,7 +87,6 @@ def words_to_pos_array(filename)
 end
 
 def pos_to_word(sentence)
-	sentence = sentence.split(" ")
 	for i in 0..(sentence.length - 1)
 		if(sentence[i] == "noun")
 			sentence[i] = @noun.shuffle[0]
@@ -157,7 +156,6 @@ def pos_to_word(sentence)
 			puts "error in pos_to_word"
 		end
 	end
-	sentence = sentence.join(" ")
 	return sentence
 end
 

@@ -14,10 +14,10 @@ def is_complete?(sentence)
 end
 
 def contains_verb?(sentence)
-	arr = sentence.split(" ")
-	if(arr.include?("verb") or arr.include?("transitive_verb") or arr.include?("intransitive_verb") or (arr.length == 2 and @interjection.include?(arr[0])))
+	if(sentence.include?("verb") or sentence.include?("transitive_verb") or sentence.include?("intransitive_verb") or (sentence.length == 2 and sentence[0] == "interjection"))
 		return true
 	else
+		puts sentence.inspect
 		return false
 	end
 end
@@ -38,21 +38,11 @@ def no_incomplete_parentheses?(sentence)
 end
 
 def proper_capitalization(sentence)
-	sentence = sentence.capitalize
-	sentence = sentence.split(" ")
-	for i in 1..(sentence.length-1)
-		if(@proper_noun.include?(sentence[i]))
-			sentence[i].capitalize!
-		else
-			sentence[i].downcase!
-		end
-	end
-	sentence = sentence.join(" ")
+	sentence[0].capitalize!
 	return sentence
 end
 
 def proper_articles(sentence)
-	sentence = sentence.split(" ")
 	subject = []
 	for i in 0..(sentence.length-1)
 		if(@singular_article.include?(sentence[i]) or @plural_article.include?(sentence[i]))
@@ -69,7 +59,6 @@ def proper_articles(sentence)
 			end
 		end
 	end
-	sentence = sentence.join(" ")
 	return sentence
 end
 
@@ -85,31 +74,34 @@ def proper_punctuation_spacing(sentence)
 end
 
 def proper_question(sentence)
-	if(sentence.include?("?") and sentence.split(" ").length > 2)
+	if(sentence.include?("?") and sentence.length > 2)
 		subject = []
-		sentence.split(" ").each do |word|
+		sentence.each do |word|
 			if(@noun.include?(word) or @plural.include?(word) or @noun_phrase.include?(word) or @proper_noun.include?(word))
 				subject << word
 			end
 		end
 		subject = subject[0]
 		if(@plural.include?(subject))
-			sentence = "Do " + sentence
+			sentence = sentence.insert(0, "Do")
 		else
-			sentence = "Does " + sentence
+			sentence = sentence.insert(0, "Does")
 		end
 	end
 	return sentence
 end
 
 def pre_tests?(sentence)
-	return (is_complete?(sentence) and contains_verb?(sentence) and correct_parentheses?(sentence))
+	puts is_complete?(sentence)
+	puts contains_verb?(sentence)
+	return (is_complete?(sentence) and contains_verb?(sentence)) #and correct_parentheses?(sentence)
 end
 
 def post_tests(sentence)
 	sentence = proper_question(sentence)
 	sentence = proper_articles(sentence)
-	sentence = proper_punctuation_spacing(sentence)
 	sentence = proper_capitalization(sentence)
+	sentence = sentence.join(" ")
+	sentence = proper_punctuation_spacing(sentence)
 	return sentence
 end
