@@ -6,23 +6,23 @@ def independent_clause
 	number = rand(2)
 	if(number == 0)
 		if(type == 0)
-			return [[declarative.flatten], "declarative", "singular"]
-		elsif(type == 1)‮
-			return [[imperative.flatten], "imperative", "singular"]
+			return [declarative.flatten, "declarative", "singular"]
+		elsif(type == 1)
+			return [imperative.flatten, "imperative", "singular"]
 		elsif(type == 2)
-			return [[interrogative.flatten], "interrogative", "singular"]
+			return [interrogative.flatten, "interrogative", "singular"]
 		else
-			return [[exclamatory.flatten], "exclamatory", "none"]
+			return [exclamatory.flatten, "exclamatory", "none"]
 		end
 	else
 		if(type == 0)
-			return [[declarative.flatten], "declarative", "plural"]
-		elsif(type == 1)‮
-			return [[imperative.flatten], "imperative", "plural"]
+			return [declarative.flatten, "declarative", "plural"]
+		elsif(type == 1)
+			return [imperative.flatten, "imperative", "plural"]
 		elsif(type == 2)
-			return [[interrogative.flatten], "interrogative", "plural"]
+			return [interrogative.flatten, "interrogative", "plural"]
 		else
-			return [[exclamatory.flatten], "exclamatory", "none"]
+			return [exclamatory.flatten, "exclamatory", "none"]
 		end
 	end
 end
@@ -32,7 +32,7 @@ def dependent_clause
 	if(type == 0)
 		return ["relative pronoun", predicate]
 	else
-		return ["relative_adverb", noun_phrase, predicate]
+		return ["relative_adverb", subject, predicate]
 	end
 end
 
@@ -40,7 +40,7 @@ def declarative
 	phrase = []
 	dependent1 = rand(2)
 	dependent2 = rand(2)
-	coordinate = rand(2)
+	coord = rand(2)
 	punctuation = rand(2)
 	if(dependent1 == 0)
 		phrase << dependent_clause
@@ -52,7 +52,7 @@ def declarative
 		phrase << ","
 		phrase << dependent_clause
 	end
-	if(coordinate == 0)
+	if(coord == 0)
 		phrase << coordinate
 	end
 	if(punctuation == 0)
@@ -66,13 +66,13 @@ end
 def imperative
 	phrase = []
 	dependent = rand(2)
-	coordinate = rand(2)
+	coord = rand(2)
 	punctuation = rand(2)
 	phrase << predicate
 	if(dependent == 0)
 		phrase << dependent_clause
 	end
-	if(coordinate == 0)
+	if(coord == 0)
 		phrase << coordinate
 	end
 	if(punctuation == 0)
@@ -88,7 +88,7 @@ def interrogative
 	dependent1 = rand(2)
 	pronoun_adverb = rand(3)
 	dependent2 = rand(2)
-	coordinate = rand(2)
+	coord = rand(2)
 	punctuation = rand(2)
 	if(dependent1 == 0)
 		phrase << dependent_clause
@@ -106,7 +106,7 @@ def interrogative
 		phrase << ","
 		phrase << dependent_clause
 	end
-	if(coordinate == 0)
+	if(coord == 0)
 		phrase << coordinate
 	end
 	phrase << "?"
@@ -114,7 +114,7 @@ def interrogative
 end
 
 def exclamatory
-	return ["interjection", !]
+	return ["interjection", "!"]
 end
 
 def subject
@@ -168,7 +168,7 @@ def subject
 end
 
 def predicate
-	phrase == []
+	phrase = []
 	helping_verb = rand(3)
 	verb_type = rand(3)
 	adverb = rand(3)
@@ -203,9 +203,15 @@ def coordinate
 end
 
 def prepositional
-	return ["preposition", noun_phrase]
+	return ["preposition", subject]
 end
 
 def adjectival
 	return dependent_clause
 end
+
+sentence = independent_clause
+puts "pos:"
+puts sentence.inspect
+puts "sentence:"
+puts pos_to_word(sentence[0]).inspect
