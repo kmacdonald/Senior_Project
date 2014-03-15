@@ -1,0 +1,77 @@
+singular_article adjective
+plural_article adjective
+singular_article noun
+adjective noun
+transitive_verb noun
+plural_article plural
+adjective plural
+transitive_verb plural
+adjective proper_noun
+transitive_verb proper_noun
+noun adverb
+noun verb
+noun transitive_verb
+noun intransitive_verb
+plural adverb
+plural verb
+plural transitive_verb
+plural intransitive_verb
+proper_noun adverb
+proper_noun verb
+proper_noun transitive_verb
+proper_noun intransitive_verb
+adverb noun
+adverb plural
+adverb proper_noun
+adverb verb
+adverb intransitive_verb
+adverb transitive_verb
+verb adverb
+intransitive_verb adverb
+singular_article noun verb
+plural_article plural verb
+singular_article noun transitive_verb
+plural_article plural transitive_verb
+singular_article noun intransitive_verb
+plural_article plural intransitive_verb
+singular_article noun adverb
+plural_article plural adverb
+singular_article adjective noun
+plural_article adjective plural
+adjective noun verb
+adjective plural verb
+adjective proper_noun verb
+adjective noun transitive_verb
+adjective plural transitive_verb
+adjective proper_noun transitive_verb
+adjective noun intransitive_verb
+adjective plural intransitive_verb
+adjective proper_noun intransitive_verb
+adjective noun adverb
+adjective plural adverb
+adjective proper_noun adverb
+noun adverb verb
+plural adverb verb
+proper_noun adverb verb
+noun adverb transitive_verb
+plural adverb transitive_verb
+proper_noun adverb transitive_verb
+noun adverb transitive_verb
+plural adverb transitive_verb
+proper_noun adverb transitive_verb
+noun transitive_verb singular_article
+plural transitive_verb singular_article
+proper_noun transitive_verb singular_article
+noun transitive_verb plural_article
+plural transitive_verb plural_article
+proper_noun transitive_verb plural_article
+noun transitive_verb adjective
+plural transitive_verb adjective
+proper_noun transitive_verb adjective
+noun transitive_verb proper_noun
+plural transitive_verb proper_noun
+proper_noun transitive_verb proper_noun
+transitive_verb singular_article noun
+transitive_verb plural_article plural
+transitive_verb singular_article adjective
+transitive_verb plural_article adjective

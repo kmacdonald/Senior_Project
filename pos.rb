@@ -1,4 +1,4 @@
-#these sentenceays can be accessed by other files
+#these arrays can be accessed by other files
 @noun = []
 @proper_noun = []
 @plural = []
@@ -12,12 +12,18 @@
 @preposition = []
 @interjection = []
 @pronoun = []
-@definite_article = []
-@indefinite_article = []
+@article = []
 @singular_article = []
 @plural_article = []
 @number = []
-@nominative = []
+@helping_verb = []
+@relative_adverb = []
+@relative_pronoun = []
+@singular_demonstrative = []
+@plural_demonstrative = []
+@quantifier = []
+@coordinating_conjunction = []
+@possessive = []
 @punctuation = [";", "!", ",", ":", ".", "(", ")", "?"]
 
 #sorts the words based on their part of speech; some go in multiple arrays
@@ -25,200 +31,166 @@ def words_to_pos_array(filename)
 	corpus = File.new(filename, "r")
 	while(line = corpus.gets)
 		word = line.chomp.split(":")
-		if(word[1].include?("n"))
-			@noun << word[0].split(";")[0]
-			@plural << word[0].split(";")[1]
+		if(word[1] == "noun")
+			@noun << word[0].split(";")
 		end
-		if(word[1].include?("N"))
+		if(word[1] == "proper_noun")
 			@proper_noun << word[0]
 		end
-		#if(word[1].include?("p"))
-		#	@plural << word[0]
-		#end
-		if(word[1].include?("h"))
+		if(word[1] == "noun_phrase")
 			@noun_phrase << word[0]
 		end
-		if(word[1].include?("V"))
+		if(word[1] == "verb")
 			@verb << word[0].split(";")
 		end
-		if(word[1].include?("t"))
+		if(word[1] == "transitive_verb")
 			@transitive_verb << word[0].split(";")
 		end
-		if(word[1].include?("i"))
+		if(word[1] == "intransitive_verb")
 			@intransitive_verb << word[0].split(";")
 		end
-		if(word[1].include?("A"))
+		if(word[1] == "adjective")
 			@adjective << word[0]
 		end
-		if(word[1].include?("v"))
+		if(word[1] == "adverb")
 			@adverb << word[0]
 		end
-		if(word[1].include?("C"))
+		if(word[1] == "conjunction")
 			@conjunction << word[0]
 		end
-		if(word[1].include?("P"))
+		if(word[1] == "preposition")
 			@preposition << word[0]
 		end
-		if(word[1].include?("!"))
+		if(word[1] == "interjection")
 			@interjection << word[0]
 		end
-		if(word[1].include?("r"))
+		if(word[1] == "pronoun")
 			@pronoun << word[0]
 		end
-		if(word[1].include?("D"))
-			@definite_article << word[0]
+		if(word[1] == "article")
+			@article << word[0]
 		end
-		if(word[1].include?("I"))
-			@indefinite_article << word[0]
-		end
-		if(word[1].include?("o"))
-			@nominative << word[0]
-		end
-		if(word[1].include?("s"))
+		if(word[1] == "singular_article")
 			@singular_article << word[0]
 		end
-		if(word[1].include?("u"))
+		if(word[1] == "plural_article")
 			@plural_article << word[0]
 		end
-		if(word[1].include?("#"))
+		if(word[1] == "number")
 			@number << word[0]
 		end
+		if(word[1] == "helping_verb")
+			@helping_verb << word[0].split(";")
+		end
+		if(word[1] == "relative_adverb")
+			@relative_adverb << word[0]
+		end
+		if(word[1] == "relative_pronoun")
+			@relative_pronoun << word[0]
+		end
+		if(word[1] == "singular_demonstrative")
+			@singular_demonstrative << word[0]
+		end
+		if(word[1] == "plural_demonstrative")
+			@plural_demonstrative << word[0]
+		end
+		if(word[1] == "quantifier")
+			@quantifier << word[0]
+		end
+		if(word[1] == "coordinating_conjunction")
+			@coordinating_conjunction << word[0]
+		end
+		if(word[1] == "possessive")
+			@possessive << word[0]
+		end
 	end
 end
 
-def pos_to_word(sentence)
-	for i in 0..(sentence.length - 1)
-		if(sentence[i] == "noun")
-			sentence[i] = @noun.shuffle[0]
-		elsif(sentence[i] == "proper_noun")
-			sentence[i] = @proper_noun.shuffle[0]
-		elsif(sentence[i] == "plural")
-			sentence[i] = @plural.shuffle[0]
-		elsif(sentence[i] == "noun_phrase")
-			sentence[i] = @noun_phrase.shuffle[0]
-		elsif(sentence[i] == "verb")
-			subject = []
-			for j in 0..(i-1)
-				if(@noun.include?(sentence[j]) or @proper_noun.include?(sentence[j]) or @noun_phrase.include?(sentence[j]) or @plural.include?(sentence[j]))
-					subject << sentence[j]
-				end
-			end
-			if((i != 0 and subject.length != 0 and @plural.include?(subject.last)) or (subject.length == 0))
-				sentence[i] = @verb.shuffle[0][0]
-			else
-				sentence[i] = @verb.shuffle[0][1]
-			end
-		elsif(sentence[i] == "transitive_verb")
-			subject = []
-			for j in 0..(i-1)
-				if(@noun.include?(sentence[j]) or @proper_noun.include?(sentence[j]) or @noun_phrase.include?(sentence[j]) or @plural.include?(sentence[j]))
-					subject << sentence[j]
-				end
-			end
-			if((i != 0 and subject.length != 0 and @plural.include?(subject.last)) or (subject.length == 0))
-				sentence[i] = @transitive_verb.shuffle[0][0]
-			else
-				sentence[i] = @transitive_verb.shuffle[0][1]
-			end
-		elsif(sentence[i] == "intransitive_verb")
-			subject = []
-			for j in 0..(i-1)
-				if(@noun.include?(sentence[j]) or @proper_noun.include?(sentence[j]) or @noun_phrase.include?(sentence[j]) or @plural.include?(sentence[j]))
-					subject << sentence[j]
-				end
-			end
-			if((i != 0 and subject.length != 0 and @plural.include?(subject.last)) or (subject.length == 0))
-				sentence[i] = @intransitive_verb.shuffle[0][0]
-			else
-				sentence[i] = @intransitive_verb.shuffle[0][1]
-			end
-		elsif(sentence[i] == "adjective")
-			sentence[i] = @adjective.shuffle[0]
-		elsif(sentence[i] == "adverb")
-			sentence[i] = @adverb.shuffle[0]
-		elsif(sentence[i] == "conjunction")
-			sentence[i] = @conjunction.shuffle[0]
-		elsif(sentence[i] == "preposition")
-			sentence[i] = @preposition.shuffle[0]
-		elsif(sentence[i] == "interjection")
-			sentence[i] = @interjection.shuffle[0]
-		elsif(sentence[i] == "pronoun")
-			sentence[i] = @pronoun.shuffle[0]
-		elsif(sentence[i] == "singular_article")
-			sentence[i] = @singular_article.shuffle[0]
-		elsif(sentence[i] == "plural_article")
-			sentence[i] = @plural_article.shuffle[0]
-		elsif(sentence[i] == "nominative")
-			sentence[i] = @nominative.shuffle[0]
-		elsif(@punctuation.include?(sentence[i]))
-			sentence[i] = sentence[i]
-		else
-			puts "error in pos_to_word"
+def find_pos(word)
+	pos = []
+	@noun.each do |w|
+		if(w.include?(word))
+			pos << "noun"
 		end
 	end
-	return sentence
+	if(@proper_noun.include?(word))
+		pos << "proper_noun"
+	end
+	if(@noun_phrase.include?(word))
+		pos << "noun_phrase"
+	end
+	@verb.each do |w|
+		if(w.include?(word))
+			pos << "verb"
+		end
+	end
+	@transitive_verb.each do |w|
+		if(w.include?(word))
+			pos << "transitive_verb"
+		end
+	end
+	@intransitive_verb.each do |w|
+		if(w.include?(word))
+			pos << "intransitive_verb"
+		end
+	end
+	if(@adjective.include?(word))
+		pos << "adjective"
+	end
+	if(@adverb.include?(word))
+		pos << "adverb"
+	end
+	if(@conjunction.include?(word))
+		pos << "conjunction"
+	end
+	if(@preposition.include?(word))
+		pos << "preposition"
+	end
+	if(@interjection.include?(word))
+		pos << "interjection"
+	end
+	if(@pronoun.include?(word))
+		pos << "pronoun"
+	end
+	if(@article.include?(word))
+		pos << "article"
+	end
+	if(@singular_article.include?(word))
+		pos << "singular_article"
+	end
+	if(@plural_article.include?(word))
+		pos << "plural_article"
+	end
+	if(@number.include?(word))
+		pos << "number"
+	end
+	@helping_verb.each do |w|
+		if(w.include?(word))
+			pos << "helping_verb"
+		end
+	end
+	if(@relative_adverb.include?(word))
+		pos << "relative_adverb"
+	end
+	if(@relative_pronoun.include?(word))
+		pos << "relative_pronoun"
+	end
+	if(@singular_demonstrative.include?(word))
+		pos << "singular_demonstrative"
+	end
+	if(@plural_demonstrative.include?(word))
+		pos << "plural_demonstrative"
+	end
+	if(@quantifier.include?(word))
+		pos << "quantifier"
+	end
+	if(@coordinating_conjunction.include?(word))
+		pos << "coordinating_conjunction"
+	end
+	if(@possessive.include?(word))
+		pos << "possessive"
+	end
+	return pos
 end
-
-def change_verb_tense(verb, ind)
-	new_verb = ""
-	@verb.each do |v|
-		if(v.include?(verb))
-			new_verb = v[ind]
-		end
-	end
-	@transitive_verb.each do |v|
-		if(v.include?(verb))
-			new_verb = v[ind]
-		end
-	end
-	@intransitive_verb.each do |v|
-		if(v.include?(verb))
-			new_verb = v[ind]
-		end
-	end
-	return new_verb
-end
-
-def sentence_about(subject, pos)
-	sentence = ""
-	sentence = pos_to_word(pos).split(" ")
-	puts sentence.inspect
-	nouns = []
-	verbs = []
-	articles = []
-	for i in 0..(sentence.length-1)
-		if(@noun.include?(sentence[i]) or @proper_noun.include?(sentence[i]) or @noun_phrase.include?(sentence[i]) or @plural.include?(sentence[i]))
-			nouns << i
-		end
-		if(@verb.include?(sentence[i]) or @transitive_verb.include?(sentence[i]) or @intransitive_verb.include?(sentence[i]))
-			verbs << i
-		end
-		if(@singular_article.include?(sentence[i]) or @plural_article.include?(sentence[i]))
-			puts sentence
-			articles << i
-		end
-	end
-	puts articles.inspect
-	sentence[nouns[0]] = subject
-	if(@plural.include?(subject))
-		for i in 0..(verbs.length-1)
-			sentence[verbs[i]] = change_verb_tense(sentence[verbs[i]], 0)
-		end
-		for i in 0..(articles.length-1)
-			sentence[articles[i]] = @plural_article.shuffle[0]
-		end
-	else
-		for i in 0..(verbs.length-1)
-			sentence[verbs[i]] = change_verb_tense(sentence[verbs[i]], 1)
-		end
-		for i in 0..(articles.length-1)
-			if(sentence[articles[i]] != "horse" and sentence[articles[i]] != "Horse")
-				sentence[articles[i]] = @singular_article.shuffle[0]
-			end
-		end
-	end
-	return sentence.join(" ")
-end
-
 #and now they are filled up:
 words_to_pos_array("words.txt")

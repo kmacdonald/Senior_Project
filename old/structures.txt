@@ -1,0 +1,105 @@
+start interjection .
+start interjection ?
+start interjection !
+start verb .
+start verb !
+start verb plural .
+start verb plural !
+start verb adverb .
+start verb adverb !
+start adverb verb .
+start adverb verb !
+start proper_noun verb .
+start proper_noun verb ?
+start proper_noun verb !
+start plural verb .
+start plural verb ?
+start plural verb !
+start intransitive_verb .
+start intransitive_verb !
+start noun intransitive_verb .
+start noun intransitive_verb ?
+start noun intransitive_verb !
+start proper_noun intransitive_verb .
+start proper_noun intransitive_verb ?
+start proper_noun intransitive_verb !
+start plural intransitive_verb .
+start plural intransitive_verb ?
+start plural intransitive_verb !
+start transitive_verb plural .
+start transitive_verb plural !
+start transitive_verb proper_noun .
+start transitive_verb proper_noun !
+start intransitive_verb adverb .
+start intransitive_verb adverb !
+start adverb intransitive_verb .
+start adverb intransitive_verb !
+start singular_article noun verb
+start singular_article plural verb
+start singular_article noun adverb
+start singular_article plural adverb
+start singular_article noun_phrase verb
+start singular_article noun_phrase adverb
+start singular_article adjective noun
+start singular_article adjective plural
+start singular_article adjective noun_phrase
+start proper_noun verb adverb
+start proper_noun adverb verb
+start singular_article noun intransitive_verb
+start singular_article noun adverb
+start plural_article plural adverb
+start singular_article adjective noun
+start singular_article adjective plural
+start proper_noun intransitive_verb adverb
+start proper_noun adverb intransitive_verb
+noun verb adverb
+noun_phrase verb adverb
+noun_phrase adverb verb
+plural verb adverb
+noun adverb verb
+plural adverb verb
+adjective noun verb
+adjective plural verb
+adjective noun adverb
+adjective plural adverb
+adjective noun_phrase verb
+adjective noun_phrase adverb
+noun intransitive_verb adverb
+noun_phrase intransitive_verb adverb
+noun_phrase adverb intransitive_verb
+plural intransitive_verb adverb
+noun adverb intransitive_verb
+plural adverb intransitive_verb
+adjective noun intransitive_verb
+adjective plural intransitive_verb
+adjective noun_phrase intransitive_verb
+intransitive_verb adverb .
+adverb intransitive_verb .
+intransitive_verb adverb ?
+adverb intransitive_verb ?
+intransitive_verb adverb !
+adverb intransitive_verb !
+noun verb .
+noun verb ?
+noun verb !
+plural verb .
+plural verb ?
+plural verb !
+verb adverb .
+adverb verb .
+verb adverb ?
+adverb verb ?
+verb adverb !
+adverb verb !
+noun intransitive_verb .
+noun intransitive_verb ?
+noun intransitive_verb !
+plural intransitive_verb .
+plural intransitive_verb ?
+plural intransitive_verb !
+intransitive_verb adverb .
+adverb intransitive_verb .
+intransitive_verb adverb ?
+adverb intransitive_verb ?
+intransitive_verb adverb !
+adverb intransitive_verb !
