@@ -5,4 +5,3 @@ text = str(sys.argv)
 print text
 blob = TextBlob(text)
 print blob.tags
-

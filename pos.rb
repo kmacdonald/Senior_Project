@@ -1,7 +1,6 @@
 #these arrays can be accessed by other files
 @noun = []
 @proper_noun = []
-@plural = []
 @noun_phrase = []
 @verb = []
 @transitive_verb = []
@@ -31,76 +30,76 @@ def words_to_pos_array(filename)
 	corpus = File.new(filename, "r")
 	while(line = corpus.gets)
 		word = line.chomp.split(":")
-		if(word[1] == "noun")
+		if(word[1] == "Noun")
 			@noun << word[0].split(";")
 		end
-		if(word[1] == "proper_noun")
+		if(word[1] == "Proper_Noun")
 			@proper_noun << word[0]
 		end
-		if(word[1] == "noun_phrase")
+		if(word[1] == "Noun_Phrase")
 			@noun_phrase << word[0]
 		end
-		if(word[1] == "verb")
+		if(word[1] == "Verb")
 			@verb << word[0].split(";")
 		end
-		if(word[1] == "transitive_verb")
+		if(word[1] == "Transitive_Verb")
 			@transitive_verb << word[0].split(";")
 		end
-		if(word[1] == "intransitive_verb")
+		if(word[1] == "Intransitive_Verb")
 			@intransitive_verb << word[0].split(";")
 		end
-		if(word[1] == "adjective")
+		if(word[1] == "Adjective")
 			@adjective << word[0]
 		end
-		if(word[1] == "adverb")
+		if(word[1] == "Adverb")
 			@adverb << word[0]
 		end
-		if(word[1] == "conjunction")
+		if(word[1] == "Conjunction")
 			@conjunction << word[0]
 		end
-		if(word[1] == "preposition")
+		if(word[1] == "Preposition")
 			@preposition << word[0]
 		end
-		if(word[1] == "interjection")
+		if(word[1] == "Interjection")
 			@interjection << word[0]
 		end
-		if(word[1] == "pronoun")
+		if(word[1] == "Pronoun")
 			@pronoun << word[0]
 		end
-		if(word[1] == "article")
+		if(word[1] == "Article")
 			@article << word[0]
 		end
-		if(word[1] == "singular_article")
+		if(word[1] == "Singular_Article")
 			@singular_article << word[0]
 		end
-		if(word[1] == "plural_article")
+		if(word[1] == "Plural_Article")
 			@plural_article << word[0]
 		end
-		if(word[1] == "number")
+		if(word[1] == "Number")
 			@number << word[0]
 		end
-		if(word[1] == "helping_verb")
+		if(word[1] == "Helping_Verb")
 			@helping_verb << word[0].split(";")
 		end
-		if(word[1] == "relative_adverb")
+		if(word[1] == "Relative_Adverb")
 			@relative_adverb << word[0]
 		end
-		if(word[1] == "relative_pronoun")
+		if(word[1] == "Relative_Pronoun")
 			@relative_pronoun << word[0]
 		end
-		if(word[1] == "singular_demonstrative")
+		if(word[1] == "Singular_Demonstrative")
 			@singular_demonstrative << word[0]
 		end
-		if(word[1] == "plural_demonstrative")
+		if(word[1] == "Plural_Demonstrative")
 			@plural_demonstrative << word[0]
 		end
-		if(word[1] == "quantifier")
+		if(word[1] == "Quantifier")
 			@quantifier << word[0]
 		end
-		if(word[1] == "coordinating_conjunction")
+		if(word[1] == "Coordinating_Conjunction")
 			@coordinating_conjunction << word[0]
 		end
-		if(word[1] == "possessive")
+		if(word[1] == "Possessive")
 			@possessive << word[0]
 		end
 	end
@@ -192,5 +191,34 @@ def find_pos(word)
 	end
 	return pos
 end
+
+def noun_form(word, num)
+	@noun.each do |n|
+		if(n.include?(word))
+			word = n[num]
+		end
+	end
+	return word
+end
+
+def verb_form(word, num)
+	@verb.each do |v|
+		if(v.include?(word))
+			word = v[num]
+		end
+	end
+	@transitive_verb.each do |v|
+		if(v.include?(word))
+			word = v[num]
+		end
+	end
+	@intransitive_verb.each do |v|
+		if(v.include?(word))
+			word = v[num]
+		end
+	end
+	return word
+end
+
 #and now they are filled up:
 words_to_pos_array("words.txt")

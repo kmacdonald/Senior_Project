@@ -1,11 +1,10 @@
 require "./pos.rb"
 require "./sort_content.rb"
+require "./knowledge.rb"
 
 def independent_clause(content)
-	puts "independent clause"
 	type = rand(10)
 	content = classify_input(content)
-	puts content.inspect
 	subj = ""
 	content.each do |word|
 		if(noun_type(word[0]) != "not a noun")
@@ -13,35 +12,41 @@ def independent_clause(content)
 		end
 	end
 	if(subj.empty?)
-		subj = @noun.shuffle[0][0]
+		subj = @knowledge.shuffle[0][0]
 	end
 	if(type == 0)
-		return proper_punctuation_spacing(exclamatory(content, subj).flatten.join(" ")).capitalize! + "!"
+		sentence = exclamatory(content, subj).flatten
+		sentence << "! "
+		return sentence
 	elsif(type == 1)
-		return proper_punctuation_spacing(imperative(content, subj).flatten.join(" ")).capitalize! + "!"
+		sentence = imperative(content, subj).flatten
+		sentence << "! "
+		return sentence
 	elsif(type == 2)
-		return proper_punctuation_spacing(interrogative(content, subj).flatten.join(" ")).capitalize! + "?"
+		sentence = interrogative(content, subj).flatten
+		sentence << "? "
+		return sentence
 	else
-		return proper_punctuation_spacing(declarative(content, subj).flatten.join(" ")).capitalize! + "."
+		sentence = declarative(content, subj).flatten
+		sentence << ". "
+		return sentence
 	end
 end
 
 def dependent_clause(content, subj)
-	puts "dependent clause"
 	phrase = []
 	type = rand(2)
 	if(type == 0)
-		phrase = [@relative_pronoun.shuffle[0], predicate("declarative", content, @noun.shuffle[0][0])]
+		phrase = [@relative_pronoun.shuffle[0], predicate("declarative", content, @knowledge.shuffle[0][0])]
 	else
-		phrase = [@relative_adverb.shuffle[0], subject(content, @noun.shuffle[0][0]), predicate("declarative", content, @noun.shuffle[0][0])]
+		phrase = [@relative_adverb.shuffle[0], subject(content, @knowledge.shuffle[0][0]), predicate("declarative", content, @knowledge.shuffle[0][0])]
 	end
 	return phrase
 end
 
 def declarative(content, subj)
-	puts "declarative"
 	phrase = []
-	chance = [rand(2), rand(4), rand(8)].shuffle
+	chance = [rand(4), rand(8), rand(16)].shuffle
 	dependent1 = chance[0]
 	dependent2 = chance[1]
 	coord = chance[2]
@@ -62,7 +67,6 @@ def declarative(content, subj)
 end
 
 def imperative(content, subj)
-	puts "imperative"
 	phrase = []
 	chance = [rand(2), rand(4)].shuffle
 	dependent = chance[0]
@@ -78,7 +82,6 @@ def imperative(content, subj)
 end
 
 def interrogative(content, subj)
-	puts "interrogative"
 	phrase = []
 	type = rand(3)
 	if(type == 0)
@@ -115,7 +118,6 @@ def interrogative(content, subj)
 end
 
 def exclamatory(content, subj)
-	puts "exclamatory"
 	phrase = []
 	type = rand(3)
 	if(type == 0)
@@ -125,13 +127,13 @@ def exclamatory(content, subj)
 	else
 		phrase = imperative(content, subj)
 	end
+	puts phrase.inspect
 	return phrase
 end
 
 def subject(content, subj)
-	puts "subject"
 	phrase = []
-	chance = [rand(2), rand(4)].shuffle
+	chance = [rand(4), rand(8)].shuffle
 	noun_chance  = rand(3)
 	adj_prep = rand(4)
 	article = rand(4)
@@ -143,6 +145,7 @@ def subject(content, subj)
 	content.each do |word|
 		if((word[1] == "singular_article") or (word[1] == "plural_article") )
 			article = word[0]
+			puts "article = " + article
 		end
 		if((word[1] == "noun") or (word[1] == "plural_noun") or (word[1] == "proper_noun"))
 			noun = word[0]
@@ -152,7 +155,7 @@ def subject(content, subj)
 		end
 	end
 	if(noun_type(noun) == "noun")
-		runoun = @noun.shuffle[0][0]
+		runoun = @knowledge.shuffle[0][0]
 		if(article == "")
 			article = @singular_article.shuffle[0]
 		end
@@ -163,50 +166,82 @@ def subject(content, subj)
 	end
 	if(adj_prep < 3)
 		if(chance[0] == 0 and adjective == "")
+			adjective = retrieve_adjective(subj)
+		end
+		if(chance[0] == 0 and adjective == "")
 			adjective = @adjective.shuffle[0]
 		end
 	else
-		preposition = prepositional_clause([], @noun.shuffle[0][0])
+		preposition = prepositional_clause([], @knowledge.shuffle[0][0])
 	end
 	if(chance[1] == 0)
 		quantifier = @quantifier.shuffle[0]
 	end
-	puts noun.inspect
-	phrase = [article, quantifier, adjective, preposition, noun]
+	phrase = [quantifier, article, adjective, preposition, noun]
 	return phrase
 end
 
 def predicate(type, content, subj)
-	puts "predicate"
 	phrase = []
 	helping_verb = rand(4)
-	verb_type = rand(3)
 	adverb = rand(4)
 	before_after = rand(2)
 	if(helping_verb == 0 and type != "imperative")
 		phrase << @helping_verb.shuffle[0][0]
 	end
-	verb = ""
-	puts subj
-	puts "noun type: "
-	puts noun_type(subj)
+	verb = retrieve_verb(subj)
+	if(verb_type(verb) == "transitive_verb")
+		verb_type = 0
+	elsif(verb_type(verb) == "intransitive_verb")
+		verb_type = 1
+	elsif(verb_type(verb) == "verb")
+		verb_type = 2
+	else
+		verb_type = rand(3)
+	end
 	if(verb_type == 0)
+		new_noun = @knowledge.shuffle[0][0]
 		if((type == "declarative" and noun_type(subj) == "plural") or type == "interrogative" or type == "imperative")
-			verb = [@transitive_verb.shuffle[0][0], subject([], @noun.shuffle[0][0])]
+			if(verb == "")
+				
+				verb = [@transitive_verb.shuffle[0][0], subject([[new_noun, "noun"]], new_noun)]
+			else
+				verb = [verb_form(verb, 0), subject([[new_noun, "noun"]], new_noun)]
+			end
 		else
-			verb = [@transitive_verb.shuffle[0][1], subject([], @noun.shuffle[0][0])]
+			if(verb == "")
+				verb = [@transitive_verb.shuffle[0][1], subject([[new_noun, "noun"]], new_noun)]
+			else
+				verb = [verb_form(verb, 1), subject([[new_noun, "noun"]], new_noun)]
+			end
 		end
 	elsif(verb_type == 1)
-		if((type == "declarative" and noun_type(subj) == "plural") or type == "interrogative" or type == "imperative")
-			verb = @intransitive_verb.shuffle[0][0]
+		if((type == "declarative" and noun_type(subj) == "plural_noun") or type == "interrogative" or type == "imperative")
+			if(verb == "")
+				verb = @intransitive_verb.shuffle[0][0]
+			else
+				verb = verb_form(verb, 0)
+			end
 		else
-			verb = @intransitive_verb.shuffle[0][1]
+			if(verb == "")
+				verb = @intransitive_verb.shuffle[0][1]
+			else
+				verb_form(verb, 1)
+			end
 		end
 	else
-		if((type == "declarative" and noun_type(subj) == "plural") or type == "interrogative" or type == "imperative")
-			verb = @verb.shuffle[0][0]
+		if((type == "declarative" and noun_type(subj) == "plural_noun") or type == "interrogative" or type == "imperative")
+			if(verb == "")
+				verb = @verb.shuffle[0][0]
+			else
+				verb_form(verb, 0)
+			end
 		else
-			verb = @verb.shuffle[0][1]
+			if(verb == "")
+				verb = @verb.shuffle[0][1]
+			else
+				verb_form(verb, 1)
+			end
 		end
 	end
 	if(adverb == 0)
@@ -224,24 +259,24 @@ def predicate(type, content, subj)
 end
 
 def coordinate_clause(content, subj)
-	puts "coordinate"
-	phrase = [",", @coordinating_conjunction.shuffle[0], declarative([], @noun.shuffle[0][0])]
+	new_noun = @knowledge.shuffle[0][0]
+	phrase = [",", @coordinating_conjunction.shuffle[0], declarative([[new_noun, "noun"]], new_noun)]
 	return phrase
 end
 
 def prepositional_clause(content, subj)
-	puts "prepositional"
-	phrase = [@preposition.shuffle[0], subject([], @noun.shuffle[0][0])]
+	new_noun = @knowledge.shuffle[0][0]
+	phrase = [@preposition.shuffle[0], subject([[new_noun, "noun"]], new_noun)]
 	return phrase
 end
 
 def adjectival_clause(content, subj)
-	puts "adjectival"
-	phrase = dependent_clause([], @noun.shuffle[0][0])
+    new_noun = @knowledge.shuffle[0][0]
+	phrase = dependent_clause([[new_noun, "noun"]], new_noun)
 	return phrase
 end
 
-def proper_punctuation_spacing(sentence)
+def proper_spacing(sentence)
 	@punctuation.each do |punct|
 		if(punct != "(")
 			sentence.gsub!(" " + punct, punct)
@@ -249,11 +284,27 @@ def proper_punctuation_spacing(sentence)
 			sentence.gsub!(punct + " ", punct)
 		end
 	end
-	sentence.gsub!("  ", " ")
-	sentence.gsub!("  ", " ")
 	return sentence
 end
 
-content = "a brown horse"
-sentence = independent_clause(content)
+def assemble_sentence(content)
+	sentence = independent_clause(content)
+	sentence.delete_if {|w| w == "" }
+	sentence[0] = sentence[0].capitalize
+	sentence = sentence.join(" ")
+	return proper_spacing(sentence)
+end
+
+def make_story(content)
+	length = 3 + rand(3)
+	story = ""
+	for i in 0..length
+		story += assemble_sentence(content)
+	end
+	return story
+end
+
+puts "Enter a topic: "
+content = gets.chomp
+sentence = make_story(content)
 puts sentence.inspect
