@@ -192,6 +192,51 @@ def find_pos(word)
 	return pos
 end
 
+
+def digits_to_words(digits)
+	zero = "zero."
+	return zero unless digits.is_a? Integer
+	return zero unless digits > 0
+	chunks = []
+	while digits/1000 > 0
+  		chunks.unshift(digits % 1000)
+  		digits /= 1000
+	end
+	chunks.unshift(digits) if digits > 0
+	ones    = %w(one two three four five six seven eight nine)
+	teens   = %w(eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen)
+	tens    = %w(ten twenty thirty forty fifty sixty seventy eighty ninety)
+	rest = %w(thousand million billion trillion quadrillion quintillion)
+	words = []
+	while chunks.length > 0
+		trio = chunks.first
+		while trio > 0
+				if trio/100 > 0
+					words << "#{ ones[trio/100 - 1] } hundred"
+					trio -= (trio/100) * 100
+				elsif trio/10 > 0
+					if trio/10 == 1
+						words << "#{ teens[trio % 10 - 1] }"
+						trio = 0
+					else
+						words << "#{ tens[trio/10 - 1] }"
+						trio -= (trio/10) * 10
+					end
+				else
+					words << "#{ ones[trio - 1 ] }"
+					trio = 0
+				end
+			end
+			if chunks.length > 1
+				words << "#{ rest[chunks.length - 2] },"
+			end
+			chunks.shift
+		end
+	end
+	words.join!(" ")
+	return words
+end
+
 def noun_form(word, num)
 	@noun.each do |n|
 		if(n.include?(word))
@@ -199,49 +244,6 @@ def noun_form(word, num)
 		end
 	end
 	return word
-end
-
-def digits_to_words(digits)
-  zero = "zero."
-  return zero unless digits.is_a? Integer
-  return zero unless digits > 0
-  chunks = []
-  while digits/1000 > 0
-    chunks.unshift(digits % 1000)
-    digits /= 1000
-  end
-  chunks.unshift(digits) if digits > 0
-  ones    = %w(one two three four five six seven eight nine)
-  teens   = %w(eleven twelve thirteen fourteen fifteen sixteen seventeen 
-               eighteen nineteen)
-  tens    = %w(ten twenty thirty forty fifty sixty seventy eighty ninety)
-  rest = %w(thousand million billion trillion quadrillion quintillion)
-  words = []
-  while chunks.length > 0
-    trio = chunks.first
-    while trio > 0
-      if trio/100 > 0
-        words << "#{ ones[trio/100 - 1] } hundred"
-        trio -= (trio/100) * 100
-      elsif trio/10 > 0
-        if trio/10 == 1
-            words << "#{ teens[trio % 10 - 1] }"
-            trio = 0
-        else
-            words << "#{ tens[trio/10 - 1] }"
-            trio -= (trio/10) * 10
-        end
-      else
-        words << "#{ ones[trio - 1 ] }"
-        trio = 0
-      end
-    end
-    if chunks.length > 1
-      words << "#{ rest[chunks.length - 2] },"
-    end
-    chunks.shift
-  end
-  words.join(" ")
 end
 
 def verb_form(word, num)
